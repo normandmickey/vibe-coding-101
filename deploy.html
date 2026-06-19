@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>"It Works On My Machine" — A Survival Guide to Deploying & Maintaining Apps</title>
+  <meta name="description" content="The unglamorous truth about shipping software: the pain of deploying, the terror of maintaining, and how to survive life after launch.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    header {
+      text-align: center;
+      padding: 56px 0 32px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--soft);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    article { padding-top: 16px; }
+
+    h2 {
+      font-size: 1.6rem;
+      letter-spacing: -0.01em;
+      margin: 48px 0 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    h2 .num {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 800;
+      background: var(--soft);
+      padding: 2px 10px;
+      border-radius: 8px;
+    }
+
+    p { margin: 0 0 18px; }
+
+    strong { color: var(--text); }
+
+    ul, ol { margin: 0 0 22px; padding-left: 22px; }
+    li { margin-bottom: 10px; }
+
+    .callout {
+      padding: 18px 22px;
+      border-radius: 12px;
+      border-left: 4px solid;
+      margin: 26px 0;
+    }
+    .callout.warn   { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success{ background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      background: var(--soft);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+
+    blockquote {
+      border-left: 4px solid var(--accent);
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--muted);
+    }
+    blockquote cite { display: block; margin-top: 8px; font-size: 0.9rem; font-style: normal; font-weight: 600; }
+
+    .timeline { margin: 26px 0; }
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-emoji { font-size: 1.6rem; line-height: 1; flex-shrink: 0; }
+    .timeline-item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .timeline-item p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+
+    .cta {
+      text-align: center;
+      margin-top: 48px;
+      padding: 36px 24px;
+      background: var(--soft);
+      border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <a href="index.html">The Guide</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+    <a href="deploy.html">Shipping</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Chapter 03 · The Aftermath</span>
+    <h1>"It Works On My Machine"</h1>
+    <p class="subtitle">A survival guide to deploying, maintaining, and not losing your mind after you ship an app.</p>
+  </header>
+
+  <article>
+
+    <blockquote>
+      "Congratulations, you built an app! ...Now what?"
+      <cite>— Every developer, the morning after launch</cite>
+    </blockquote>
+
+    <p>
+      Building an app is the fun part. The hero's journey. The dopamine hit. But the moment you decide
+      to <strong>share it with the world</strong>, you step through a door into a much less glamorous
+      realm. This is the land of servers, configs, env vars, broken builds, and 3&nbsp;a.m. alerts.
+      Vibe coders feel this pain especially hard — you went from idea to working app in an afternoon,
+      and then spent a <em>week</em> trying to get a stranger to see it in their browser.
+    </p>
+
+    <p>
+      Let's talk honestly about what happens <em>after</em> the code works. The pain is real — but
+      so are the ways through it.
+    </p>
+
+    <!-- THE DEPLOY GAUNTLET -->
+    <h2><span class="num">01</span> The Deploy Gauntlet</h2>
+    <p>
+      "Deploying" sounds like a single, confident button press. In reality it's a gauntlet of
+      decisions and miseries, each one ready to trip you up:
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>🌍 Where does it live?</h3>
+        <p>Server or serverless? A VPS, a cloud bucket, a container, a platform? Every option has its own vocabulary, dashboard, and quirks.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Dependencies collide</h3>
+        <p>The app runs perfectly on your machine because you have Node 20. The server has Node 16. Congratulations — you've met dependency hell.</p>
+      </div>
+      <div class="card">
+        <h3>🔐 Secrets go missing</h3>
+        <p>That API key in your <code>.env</code>? The server doesn't have it. Now your app is live and immediately broken for everyone.</p>
+      </div>
+      <div class="card">
+        <h3>🌐 Domains &amp; DNS</h3>
+        <p>Buying a name, pointing records, waiting hours for DNS to propagate, and praying to the SSL certificate gods.</p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <p>
+        <strong>It works on my machine.</strong> The five most dangerous words in software. If it
+        only runs on your laptop, it doesn't really run anywhere. The gap between "works for me" and
+        "works for a stranger" is enormous — and it's where most vibe coders first hit a wall.
+      </p>
+    </div>
+
+    <!-- THE LAST 10% -->
+    <h2><span class="num">02</span> The Last 10% Takes 90%</h2>
+    <p>
+      Vibe coding gets you to a working prototype shockingly fast. But that final stretch — making
+      it fast, reliable, secure, and available to real people — eats most of the time and effort.
+      Here's the timeline nobody warns you about:
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-emoji">⚡</span>
+        <div>
+          <h3>The Vibe (Day 1)</h3>
+          <p>Idea → working app in hours. Pure flow. You feel like a wizard.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-emoji">🔧</span>
+        <div>
+          <h3>The Rough Edges (Day 2–3)</h3>
+          <p>You find bugs, polish the UI, add the features you forgot. Still fun, mostly.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-emoji">🧱</span>
+        <div>
+          <h3>The Wall (Day 4–7)</h3>
+          <p>Time to deploy. Config files, build errors, environment mismatches. Progress crawls.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-emoji">😅</span>
+        <div>
+          <h3>The Deep Trench (Week 2+)</h3>
+          <p>Getting it actually stable online — SSL, performance, monitoring — drags on for days or weeks.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINTENANCE -->
+    <h2><span class="num">03</span> And Then You Have to Maintain It</h2>
+    <p>
+      Deployment is a one-time event. <strong>Maintenance is forever.</strong> Once your app is live,
+      a whole new category of pain begins:
+    </p>
+
+    <ul>
+      <li><strong>Rot:</strong> The libraries you used release updates. Some fix security holes. Some break your app. You can't ignore either.</li>
+      <li><strong>The 3&nbsp;a.m. page:</strong> Your app crashes while you sleep. Users see errors. You wake up to angry messages.</li>
+      <li><strong>Heisenbugs:</strong> "It was working yesterday!" Something broke and you have no idea what changed.</li>
+      <li><strong>Cost creep:</strong> That "free" tier quietly hits its limit. Bills appear. Traffic spikes and so does your invoice.</li>
+      <li><strong>Spaghettification:</strong> Every quick fix makes the code a little harder to understand, until you're afraid to touch anything.</li>
+      <li><strong>Lost context:</strong> Three months later you can't remember why a single line exists. The AI that wrote it has forgotten too.</li>
+    </ul>
+
+    <div class="callout danger">
+      <p>
+        <strong>The silent killer: unmaintained apps.</strong> The most common ending for a vibe-coded
+        project isn't failure — it's <em>neglect</em>. The app drifts, decays, and eventually breaks,
+        and nobody has the energy to fix it. Shipping is easy. Sustaining is the hard mode.
+      </p>
+    </div>
+
+    <!-- HOW TO SURVIVE -->
+    <h2><span class="num">04</span> How to Survive the Aftermath</h2>
+    <p>
+      You can't eliminate the pain of running software — but you can dramatically reduce it. A few
+      habits separate the apps that last from the ones that quietly die:
+    </p>
+
+    <ol>
+      <li><strong>Pick boring infrastructure.</strong> The least exciting deploy option is usually the most reliable. Reach for managed platforms before hand-rolling servers.</li>
+      <li><strong>Automate the deploy.</strong> If deploying takes more than a button press, you'll avoid it. Automate builds and releases so shipping is frictionless.</li>
+      <li><strong>Separate your secrets.</strong> Never hardcode keys. Store them securely, inject them at runtime, and keep them out of your code history.</li>
+      <li><strong>Add eyes on it.</strong> Set up basic monitoring and alerts so you hear about breakage before your users do.</li>
+      <li><strong>Pin your versions.</strong> Lock down dependencies so a rogue update can't silently break your live app.</li>
+      <li><strong>Keep a changelog.</strong> Write down what you changed and why. Future-you will be grateful.</li>
+      <li><strong>Right-size your scope.</strong> Don't over-engineer. A simple app that stays up beats a clever one that falls over.</li>
+    </ol>
+
+    <div class="callout success">
+      <p>
+        <strong>The good news:</strong> The deploy-and-maintain struggle is so universal that an
+        entire industry exists to solve it. Modern platforms abstract away the servers, the SSL
+        headaches, the DNS, and the 3&nbsp;a.m. alerts — so you can keep the fun part (building) and
+        hand off the pain.
+      </p>
+    </div>
+
+    <!-- BRIDGE TO SAASCLAW -->
+    <h2><span class="num">05</span> What If the Platform Handled It?</h2>
+    <p>
+      What if you could vibe-code an app and have a live, shareable preview the instant it ran —
+      no servers to rent, no DNS to configure, no build pipeline to fight? What if your secrets were
+      managed for you, your environment was consistent, and the gap between "works for me" and
+      "works for everyone" simply… vanished?
+    </p>
+    <p>
+      That's the gap SaaSClaw is built to close. The building stays magical; the shipping and
+      maintaining stop being a separate, soul-crushing job.
+    </p>
+
+    <div class="cta">
+      <h3 style="margin:0 0 8px;">Ready to skip the gauntlet?</h3>
+      <p style="margin:0; color:var(--muted);">See how SaaSClaw turns deploy pain into a non-event.</p>
+      <a href="saasclaw.html">Meet SaaSClaw &rarr;</a>
+    </div>
+
+  </article>
+
+  <footer>
+    <p>🦞 Vibe Coding 101 · A field guide for the curious builder</p>
+  </footer>
+</body>
+</html>
