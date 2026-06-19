@@ -33,6 +33,27 @@
       background: var(--bg);
     }
 
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
     header {
       text-align: center;
       padding: 64px 0 40px;
@@ -197,6 +218,12 @@
   </style>
 </head>
 <body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <a href="index.html">The Guide</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
   <header>
     <span class="eyebrow">The Complete Guide</span>
     <h1>Vibe Coding 101</h1>
@@ -393,6 +420,14 @@
       So go ahead: describe the vibe. Build the thing. Just remember to commit your work, read your
       code, and keep one eye on what the machine is actually doing behind the curtain.
     </p>
+
+    <div class="callout success">
+      <span class="callout-title">🦞 Looking for a place to vibe code?</span>
+      <strong>SaaSClaw</strong> is an AI coding studio built specifically to keep the magic of
+      vibe coding while taming its chaos — managed secrets, instant live previews, version
+      control, and guardrails that let you build with confidence.
+      <a href="saasclaw.html" style="font-weight:700;">Meet SaaSClaw &rarr;</a>
+    </div>
   </article>
 
   <footer>

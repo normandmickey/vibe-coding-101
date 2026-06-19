@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SaaSClaw — A Better Place to Vibe Code</title>
+  <meta name="description" content="Meet SaaSClaw: the AI coding environment built for vibe coders. Safer, saner, and more fun — with guardrails for every pitfall and danger.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    header {
+      text-align: center;
+      padding: 48px 0 40px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), #ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header .tagline {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--soft);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    article { margin-top: 16px; }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 48px 0 16px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 .num {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin: 28px 0 10px;
+      color: var(--accent-dark);
+    }
+
+    p { margin: 0 0 18px; }
+
+    .lead { font-size: 1.18rem; color: var(--muted); }
+
+    a { color: var(--accent); }
+
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 8px; }
+
+    blockquote {
+      margin: 28px 0;
+      padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft);
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      color: var(--accent-dark);
+    }
+
+    blockquote cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .callout {
+      margin: 24px 0;
+      padding: 18px 22px;
+      border-radius: 12px;
+      border-left: 4px solid;
+    }
+
+    .callout.danger { background: var(--danger-bg); border-color: var(--danger-border); }
+    .callout.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+
+    .callout-title { font-weight: 700; margin-bottom: 6px; display: block; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      background: var(--soft);
+      border: 1px solid #ede9fe;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+      color: var(--accent-dark);
+      background: var(--soft);
+      border: 1px solid #ddd6fe;
+    }
+
+    /* comparison table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    th {
+      background: var(--soft);
+      color: var(--accent-dark);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    td:first-child { font-weight: 600; width: 40%; }
+    .check { color: var(--success-border); font-weight: 800; }
+
+    .cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      margin-top: 12px;
+    }
+    .cta:hover { background: var(--accent-dark); }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 28px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <a href="index.html">The Guide</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Meet the Platform</span>
+    <h1>SaaSClaw</h1>
+    <p class="tagline">A purpose-built home for vibe coders — the fun stays, the headaches don't.</p>
+  </header>
+
+  <article>
+    <p class="lead">
+      Vibe coding is a blast — until it isn't. The rewrite spirals, the security scares, the mystery
+      bugs, the keys you accidentally pasted into a prompt. <strong>SaaSClaw</strong> is an AI coding
+      environment designed from the ground up to keep the magic of vibe coding while taming its chaos.
+      Here's how it works.
+    </p>
+
+    <!-- WHAT IS SAASCLAW -->
+    <h2><span class="num">01</span> What Is SaaSClaw?</h2>
+    <p>
+      SaaSClaw is a complete, browser-based studio where an AI agent writes, runs, and deploys your
+      code for you. You describe what you want in plain language; the agent reads and writes files,
+      runs commands, installs dependencies, and even launches your project to a live URL — all inside
+      a managed environment you can watch happen in real time.
+    </p>
+    <p>
+      Think of it as a sandbox, an editor, a terminal, and an eager AI pair-programmer rolled into one.
+      You bring the vibes; SaaSClaw handles the plumbing.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🗣️ Talk, don't type</h3>
+        <p>Describe features in natural language and watch the agent build them.</p>
+      </div>
+      <div class="card">
+        <h3>🚀 Live previews</h3>
+        <p>Every change ships to a real URL instantly — see it work as you go.</p>
+      </div>
+      <div class="card">
+        <h3>🔧 Runs commands</h3>
+        <p>Install packages, run tests, and execute scripts without leaving the chat.</p>
+      </div>
+      <div class="card">
+        <h3>🔐 Secrets, handled</h3>
+        <p>Store API keys safely and keep them out of your code and your prompts.</p>
+      </div>
+    </div>
+
+    <!-- HOW IT HELPS -->
+    <h2><span class="num">02</span> How SaaSClaw Tames the Chaos</h2>
+    <p>
+      We've all felt the pitfalls of vibe coding. Here's how SaaSClaw addresses each one —
+      both the negative dangers and the everyday frustrations.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>The Vibe Coder's Problem</th>
+          <th>How SaaSClaw Helps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Exposed or pasted API keys</td>
+          <td><span class="check">✓</span> Built-in environment variables keep secrets encrypted and out of your source files entirely.</td>
+        </tr>
+        <tr>
+          <td>"It worked on my machine" surprises</td>
+          <td><span class="check">✓</span> A consistent, managed runtime means what you see is what you ship — to a real live URL.</td>
+        </tr>
+        <tr>
+          <td>The rewrite spiral</td>
+          <td><span class="check">✓</span> Version control and a clear history let you see every change and roll back when an "improvement" breaks things.</td>
+        </tr>
+        <tr>
+          <td>Lost context &amp; regressions</td>
+          <td><span class="check">✓</span> A live todo list and persistent project state keep the agent (and you) oriented and on track.</td>
+        </tr>
+        <tr>
+          <td>Unverified, hallucinated dependencies</td>
+          <td><span class="check">✓</span> Dependencies are installed in a real shell, so broken or invented packages fail fast — and visibly.</td>
+        </tr>
+        <tr>
+          <td>No idea what the code does</td>
+          <td><span class="check">✓</span> Full file browsing, diffs, and inline explanations turn the black box into a glass box.</td>
+        </tr>
+        <tr>
+          <td>Deploys and hosting are a chore</td>
+          <td><span class="check">✓</span> Your project is live by default. No Dockerfiles, no CI config, no surprises.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout success">
+      <span class="callout-title">🛡️ Safer by default</span>
+      Code runs inside an isolated environment, secrets stay secret, and you can review and revert any
+      change before it sticks. The guardrails are there so you can lean into the vibes with confidence.
+    </div>
+
+    <!-- KEEPS THE FUN -->
+    <h2><span class="num">03</span> And It Keeps the Fun</h2>
+    <p>
+      Guardrails aren't the whole story — SaaSClaw is built to amplify the joy that makes vibe coding
+      addictive in the first place.
+    </p>
+
+    <ul>
+      <li><strong>Instant gratification:</strong> Ask, and seconds later your idea is running on the web. That feedback loop is the whole point.</li>
+      <li><strong>Friction-free experiments:</strong> Curious whether a neon gradient or a chatbot would be cooler? Just ask. Throwaway ideas cost nothing.</li>
+      <li><strong>From idea to shipped:</strong> Skip the tutorials and the boilerplate. Go straight from "what if..." to "look what I made."</li>
+      <li><strong>Less frustration, more flow:</strong> Fewer environment meltdowns means more time in the satisfying zone where the AI just <em>gets it</em>.</li>
+    </ul>
+
+    <blockquote>
+      The best vibe coding happens when you can stay in the flow — curious, playful, and unafraid to
+      try things. Good tooling isn't a buzzkill; it's what makes the play possible.
+      <cite>— The SaaSClaw Philosophy</cite>
+    </blockquote>
+
+    <!-- WHO IT'S FOR -->
+    <h2><span class="num">04</span> Who It's For</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>🌱 Newcomers</h3>
+        <p>Build real apps on day one, with guardrails that keep you safe while you learn the ropes.</p>
+      </div>
+      <div class="card">
+        <h3>⚙️ Tinkerers</h3>
+        <p>Prototype and ship side projects at the speed of thought, then dig into the code whenever you want.</p>
+      </div>
+      <div class="card">
+        <h3>💼 Builders</h3>
+        <p>Turn a prompt into a deployed product without a team, a server, or a weekend lost to config.</p>
+      </div>
+      <div class="card">
+        <h3>🎓 Learners</h3>
+        <p>Read the diffs, watch the agent reason, and pick up real engineering habits along the way.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <h2><span class="num">05</span> Ready to Vibe?</h2>
+    <p>
+      Vibe coding is most fun when the tool gets out of your way — but steps in before you fall.
+      SaaSClaw is built to do exactly that: keep the speed and the joy, lose the security scares and
+      the 3am debugging sessions.
+    </p>
+    <p>
+      Want to start from the top? Read the full guide to what vibe coding is, what you can build,
+      and the pitfalls to watch for.
+    </p>
+    <a class="cta" href="index.html">← Back to the Vibe Coding Guide</a>
+  </article>
+
+  <footer>
+    <p>Made with vibes &amp; guardrails · SaaSClaw Studio</p>
+  </footer>
+</body>
+</html>
