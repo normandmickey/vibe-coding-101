@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Vibe Coder's Toolkit — Editors, Models & Hosting</title>
+  <meta name="description" content="A no-nonsense tour of the vibe coding stack: AI editors, models, and where to host what you build. What to use, and what each piece is actually for.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
+    header { text-align: center; padding: 64px 0 40px; }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); background: var(--soft);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem; line-height: 1.1; margin: 0 0 16px;
+      color: #0f172a; letter-spacing: -0.02em;
+    }
+
+    .tagline { font-size: 1.18rem; color: var(--muted); max-width: 580px; margin: 0 auto; }
+
+    article { margin-top: 16px; }
+
+    h2 {
+      font-size: 1.6rem; margin: 48px 0 16px; color: #0f172a;
+      display: flex; align-items: center; gap: 10px;
+    }
+    h2 .num { font-size: 0.85rem; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+    h3 { font-size: 1.2rem; margin: 0 0 8px; color: var(--accent-dark); }
+
+    p { margin: 0 0 18px; }
+    .lead { font-size: 1.18rem; color: var(--muted); }
+    a { color: var(--accent); }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 999px;
+      background: var(--soft); color: var(--accent-dark);
+      margin: 0 4px 6px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .card {
+      background: var(--soft);
+      padding: 18px 20px;
+      border-radius: 12px;
+    }
+    .card h3 { font-size: 1.05rem; }
+    .card p { margin: 6px 0 0; font-size: 0.92rem; color: var(--muted); }
+
+    .callout {
+      margin: 24px 0; padding: 18px 22px;
+      border-radius: 12px; border-left: 4px solid;
+    }
+    .callout.warn    { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout-title { display: block; font-weight: 700; margin-bottom: 6px; }
+
+    blockquote {
+      margin: 28px 0; padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft); border-radius: 0 12px 12px 0;
+      font-style: italic; color: var(--accent-dark);
+    }
+
+    .cta {
+      text-align: center; margin-top: 48px; padding: 36px 24px;
+      background: var(--soft); border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block; margin-top: 8px;
+      background: var(--accent); color: #fff;
+      padding: 12px 28px; border-radius: 10px;
+      text-decoration: none; font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center; color: var(--muted); font-size: 0.85rem;
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Chapter 05 · The Gear</span>
+    <h1>The Vibe Coder's Toolkit</h1>
+    <p class="tagline">Editors, models, and hosting — the gear that turns vibes into shipped software.</p>
+  </header>
+
+  <article>
+    <p class="lead">
+      Vibe coding isn't one tool — it's a stack. You've got the <strong>editor</strong> where you
+      actually talk to the AI, the <strong>model</strong> doing the thinking, and the
+      <strong>hosting</strong> where the result lives so the world can see it. Each layer matters,
+      and each has its own traps. Here's a plain-English tour.
+    </p>
+
+    <!-- AI EDITORS -->
+    <h2><span class="num">01</span> The Editor: Where You Talk to the AI</h2>
+    <p>
+      The editor is your cockpit. This is where you type prompts, watch the AI write and edit files,
+      and approve or steer its work. The two flavors to know:
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="pill">Desktop</span>
+        <span class="pill">IDE-integrated</span>
+        <h3>Cursor &amp; Cline</h3>
+        <p>AI baked straight into a full code editor. Great when you want deep control over a local codebase and the power to run anything.</p>
+      </div>
+      <div class="card">
+        <span class="pill">Browser-based</span>
+        <span class="pill">Zero setup</span>
+        <h3>Cloud studios (like SaaSClaw)</h3>
+        <p>The whole environment runs in your browser — editor, terminal, and AI in one. No installs, no "works on my machine" — just open and build.</p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-title">⚠️ Pick one and learn it</span>
+      <p>
+        Every editor has its own way of handling context, approvals, and file edits. Jumping between
+        three of them means being a beginner at all three. Master one first.
+      </p>
+    </div>
+
+    <!-- THE MODELS -->
+    <h2><span class="num">02</span> The Model: The Brain Behind the Code</h2>
+    <p>
+      The model is the engine. Different models have different strengths — some are faster, some are
+      smarter, some are cheaper per word. Most editors let you switch between them. A few things that
+      matter:
+    </p>
+    <ul>
+      <li><strong>Capability vs. cost.</strong> The smartest models cost the most per request. Use the heavy hitters for hard architecture; use the fast ones for quick edits.</li>
+      <li><strong>Context window.</strong> How much code and conversation a model can "see" at once. Bigger isn't always better, but too small means it forgets your files.</li>
+      <li><strong>Specialization.</strong> Some models are tuned for code specifically and outshine general chat models at programming tasks.</li>
+    </ul>
+
+    <blockquote>
+      You don't need to chase every new model release. Pick a reliable one, learn its quirks, and
+      switch only when a task genuinely outgrows it.
+    </blockquote>
+
+    <!-- HOSTING -->
+    <h2><span class="num">03</span> Hosting: So People Can Actually See It</h2>
+    <p>
+      Code that only runs on your laptop is a prototype, not a product. Hosting is how you turn a
+      working app into a live URL anyone can visit. The landscape runs from dead-simple to deeply
+      configurable:
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="pill">Static sites</span>
+        <span class="pill">Free tier</span>
+        <h3>Static hosts</h3>
+        <p>Perfect for landing pages and front-end-only apps. Drag, drop, done. Fast and free.</p>
+      </div>
+      <div class="card">
+        <span class="pill">Full-stack</span>
+        <span class="pill">Serverless</span>
+        <h3>Serverless platforms</h3>
+        <p>For apps with a backend, databases, or auth. Handles the server parts so you don't.</p>
+      </div>
+      <div class="card">
+        <span class="pill">Built-in</span>
+        <span class="pill">No config</span>
+        <h3>All-in-one studios</h3>
+        <p>Build <em>and</em> deploy from the same place — no separate hosting account or CI setup.</p>
+      </div>
+      <div class="card">
+        <span class="pill">Control</span>
+        <span class="pill">Steep curve</span>
+        <h3>VPS / cloud (the hard way)</h3>
+        <p>Total control, total responsibility. Overkill until you genuinely need it.</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-title">🚨 Don't ship your secrets</span>
+      <p>
+        API keys, database passwords, and tokens belong in <strong>environment variables</strong>
+        &mdash; never pasted into code that gets deployed. Exposed keys get scraped within minutes
+        and can run up a shocking bill. Check before you push.
+      </p>
+    </div>
+
+    <!-- HOW IT FITS TOGETHER -->
+    <h2><span class="num">04</span> How the Stack Fits Together</h2>
+    <p>Put it all together and a typical vibe-coding session flows like this:</p>
+    <ol>
+      <li><strong>Open your editor</strong> and describe what you want to build.</li>
+      <li><strong>Iterate with the model</strong> &mdash; prompt, review the code, refine.</li>
+      <li><strong>Test locally</strong> until it behaves the way you described.</li>
+      <li><strong>Deploy to your host</strong> and share the live URL.</li>
+    </ol>
+
+    <div class="callout success">
+      <span class="callout-title">✅ The beginner-friendly path</span>
+      <p>
+        If all this sounds like a lot of moving parts, there's a shortcut: an all-in-one studio
+        collapses the editor, the model access, <em>and</em> the hosting into one place. You prompt,
+        it builds, it deploys. Nothing to install, nothing to wire together.
+      </p>
+    </div>
+
+    <div class="cta">
+      <p><strong>The whole stack, already assembled.</strong></p>
+      <p style="color: var(--muted);">SaaSClaw is an editor, model access, and hosting in one browser tab — built so vibe coders can skip the plumbing.</p>
+      <a href="saasclaw.html">Meet SaaSClaw →</a>
+    </div>
+  </article>
+
+  <footer>
+    <p>🦞 Vibe Coding 101 · A field guide for the curious builder</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vibe Coding Glossary — The Words You Need to Know</title>
+  <meta name="description" content="A plain-English glossary of vibe coding terms: agents, context windows, hallucinations, MCP, tokens, and more. Grouped by theme so you learn the lingo.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
+    header { text-align: center; padding: 64px 0 40px; }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); background: var(--soft);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem; line-height: 1.1; margin: 0 0 16px;
+      color: #0f172a; letter-spacing: -0.02em;
+    }
+
+    .tagline { font-size: 1.18rem; color: var(--muted); max-width: 580px; margin: 0 auto; }
+
+    .jumps {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+      margin: 28px 0 8px;
+    }
+    .jumps a {
+      font-size: 0.85rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 999px;
+      background: var(--soft); color: var(--accent-dark);
+      text-decoration: none;
+    }
+    .jumps a:hover { background: var(--accent); color: #fff; }
+
+    article { margin-top: 16px; }
+
+    h2 {
+      font-size: 1.5rem; margin: 48px 0 16px; color: #0f172a;
+      padding-bottom: 10px; border-bottom: 2px solid var(--soft);
+    }
+
+    .terms { display: grid; gap: 14px; margin-bottom: 8px; }
+
+    .term {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .term-head {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 6px;
+    }
+    .term-head h3 { margin: 0; font-size: 1.1rem; color: var(--accent-dark); }
+    .term p { margin: 0; font-size: 0.96rem; color: var(--muted); }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 10px; border-radius: 999px;
+    }
+    .pill.beginner { background: var(--success-bg); color: #15803d; }
+    .pill.intermediate { background: var(--warn-bg); color: #b45309; }
+    .pill.danger { background: var(--danger-bg); color: #b91c1c; }
+
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+      font-size: 0.82rem; color: var(--muted); margin: 8px 0 0;
+    }
+    .legend .pill { font-size: 0.66rem; }
+
+    .cta {
+      text-align: center; margin-top: 48px; padding: 36px 24px;
+      background: var(--soft); border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block; margin-top: 8px;
+      background: var(--accent); color: #fff;
+      padding: 12px 28px; border-radius: 10px;
+      text-decoration: none; font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center; color: var(--muted); font-size: 0.85rem;
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Reference</span>
+    <h1>The Vibe Coding Glossary</h1>
+    <p class="tagline">The words you'll hear, explained without the jargon.</p>
+  </header>
+
+  <div class="jumps">
+    <a href="#basics">🌱 Basics</a>
+    <a href="#tooling">🛠️ Tooling</a>
+    <a href="#danger">⚠️ Danger Zones</a>
+  </div>
+  <p class="legend">
+    <span class="pill beginner">beginner</span> start here
+    <span class="pill intermediate">intermediate</span> worth knowing
+    <span class="pill danger">watch out</span> handle with care
+  </p>
+
+  <article>
+    <h2 id="basics">🌱 Basics</h2>
+    <div class="terms">
+      <div class="term">
+        <div class="term-head"><h3>Vibe Coding</h3><span class="pill beginner">beginner</span></div>
+        <p>Building software by describing what you want in natural language and letting AI write the code. The vibe is the intuition; the code is the byproduct.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Prompt</h3><span class="pill beginner">beginner</span></div>
+        <p>The instruction you give the AI. A good prompt is clear, specific, and gives context. See <a href="prompting.html">Prompting for Vibe Coders</a>.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>LLM</h3><span class="pill beginner">beginner</span></div>
+        <p>Large Language Model — the AI engine that predicts text. It's the brain behind the code generation, but it has no memory of your project unless you feed it back in.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Token</h3><span class="pill beginner">beginner</span></div>
+        <p>A chunk of text the model processes — roughly a word or part of one. Models are billed and limited by token count, so bigger isn't always better.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Context Window</h3><span class="pill intermediate">intermediate</span></div>
+        <p>How much text the model can "see" at once. Once you exceed it, older context falls off — which is why the AI sometimes forgets earlier instructions.</p>
+      </div>
+    </div>
+
+    <h2 id="tooling">🛠️ Tooling</h2>
+    <div class="terms">
+      <div class="term">
+        <div class="term-head"><h3>Agent</h3><span class="pill intermediate">intermediate</span></div>
+        <p>An AI that can take actions — not just answer, but run commands, edit files, and loop until a task is done. More powerful, and more able to make a mess.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Context</h3><span class="pill intermediate">intermediate</span></div>
+        <p>The background info you give the AI so it understands your project: existing code, goals, constraints. Good context is the single biggest lever on output quality.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>MCP</h3><span class="pill intermediate">intermediate</span></div>
+        <p>Model Context Protocol — a standard way to connect an AI to external tools and data sources so it can act on the real world, not just talk about it.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>IDE / AI Editor</h3><span class="pill beginner">beginner</span></div>
+        <p>Where you write code. Modern AI editors (like Cursor) bake an assistant directly into the editor. See <a href="tools.html">The Vibe Coder's Toolkit</a>.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Diff</h3><span class="pill intermediate">intermediate</span></div>
+        <p>A view of what changed — line by line — between two versions of code. Always read the diff before accepting an AI's edits.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Commit</h3><span class="pill beginner">beginner</span></div>
+        <p>Saving a snapshot of your code with version control (Git). Every commit is a save point you can return to when a prompt goes sideways.</p>
+      </div>
+    </div>
+
+    <h2 id="danger">⚠️ Danger Zones</h2>
+    <div class="terms">
+      <div class="term">
+        <div class="term-head"><h3>Hallucination</h3><span class="pill danger">watch out</span></div>
+        <p>When the AI states something false with total confidence — a fake library, a made-up API. Always verify before trusting. See <a href="mistakes.html">Mistakes &amp; How to Survive Them</a>.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Scope Creep</h3><span class="pill danger">watch out</span></div>
+        <p>When a small project balloons into a sprawling mess because the AI happily keeps adding features. The model never says "that's enough" — you have to.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Secret / API Key</h3><span class="pill danger">watch out</span></div>
+        <p>A password-like credential (database URL, API token). Never hardcode these in source files — keep them in environment variables so they don't leak.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>Big Rewrite</h3><span class="pill danger">watch out</span></div>
+        <p>Asking the AI to "clean everything up" and getting back a broken codebase. Prefer targeted fixes over wholesale rewrites.</p>
+      </div>
+      <div class="term">
+        <div class="term-head"><h3>"Works On My Machine"</h3><span class="pill intermediate">intermediate</span></div>
+        <p>Code that runs locally but breaks when deployed. The gap between "it works here" and "it works everywhere" is the whole job of shipping. See <a href="deploy.html">the shipping guide</a>.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <p><strong>New to all this?</strong></p>
+      <p>Start with the complete guide, then come back here whenever a term throws you.</p>
+      <a href="index.html">Read The Guide →</a>
+    </div>
+  </article>
+
+  <footer>
+    Vibe Coding 101 · Part of the <a href="saasclaw.html">SaaSClaw</a> guide series.
+    Learn more: <a href="index.html">The Guide</a> · <a href="prompting.html">Prompting</a> · <a href="tools.html">Toolkit</a> · <a href="mistakes.html">Mistakes</a>
+  </footer>
+</body>
+</html>

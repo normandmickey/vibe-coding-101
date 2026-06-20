@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vibe Coding Mistakes & How to Survive Them</title>
+  <meta name="description" content="The classic vibe coding mistakes that wreck projects — and how to survive each one. Hallucinations, scope creep, the big rewrite, and trusting the AI too far.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
+    header { text-align: center; padding: 64px 0 40px; }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); background: var(--soft);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem; line-height: 1.1; margin: 0 0 16px;
+      color: #0f172a; letter-spacing: -0.02em;
+    }
+
+    .tagline { font-size: 1.18rem; color: var(--muted); max-width: 580px; margin: 0 auto; }
+
+    article { margin-top: 16px; }
+
+    h2 {
+      font-size: 1.6rem; margin: 48px 0 16px; color: #0f172a;
+      display: flex; align-items: center; gap: 10px;
+    }
+    h2 .num { font-size: 0.85rem; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+    h3 { font-size: 1.2rem; margin: 28px 0 10px; color: var(--accent-dark); }
+
+    p { margin: 0 0 18px; }
+    .lead { font-size: 1.18rem; color: var(--muted); }
+    a { color: var(--accent); }
+
+    code {
+      background: var(--soft); color: var(--accent-dark);
+      padding: 2px 6px; border-radius: 5px; font-size: 0.9em;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    .callout {
+      margin: 24px 0; padding: 18px 22px;
+      border-radius: 12px; border-left: 4px solid;
+    }
+    .callout.warn    { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout-title { display: block; font-weight: 700; margin-bottom: 6px; }
+
+    blockquote {
+      margin: 28px 0; padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft); border-radius: 0 12px 12px 0;
+      font-style: italic; color: var(--accent-dark);
+    }
+
+    .timeline { margin: 26px 0; }
+    .timeline-item {
+      display: flex; gap: 16px; padding: 18px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-emoji {
+      font-size: 1.6rem; line-height: 1; flex-shrink: 0;
+    }
+    .timeline-body h3 { margin: 0 0 6px; font-size: 1.1rem; color: var(--accent-dark); }
+    .timeline-body p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+
+    .cta {
+      text-align: center; margin-top: 48px; padding: 36px 24px;
+      background: var(--soft); border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block; margin-top: 8px;
+      background: var(--accent); color: #fff;
+      padding: 12px 28px; border-radius: 10px;
+      text-decoration: none; font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center; color: var(--muted); font-size: 0.85rem;
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Chapter 04 · Survival Guide</span>
+    <h1>Mistakes & How to Survive Them</h1>
+    <p class="tagline">Every vibe coder makes these. The good ones survive them.</p>
+  </header>
+
+  <article>
+    <p class="lead">
+      Vibe coding is fast, fun, and a little dangerous — like cooking with a blowtorch.
+      Here are the classic mistakes that turn a vibe project into a dumpster fire, and the
+      survival moves that pull you back from each one.
+    </p>
+
+    <h2><span class="num">01</span> The Hallucination Hug</h2>
+    <p>
+      The AI invents a library that doesn't exist. It gives you a function with a
+      confident-looking name, a sensible signature, and absolutely no real
+      implementation behind it. You paste it in. It feels right. It is not right.
+    </p>
+    <div class="callout danger">
+      <span class="callout-title">🔥 The mistake</span>
+      <p>Trusting the AI's confidence as proof. Confidence is free for the model — it costs nothing to sound certain about a package that was never published.</p>
+    </div>
+    <div class="callout success">
+      <span class="callout-title">✅ The survival move</span>
+      <p>Before importing anything, check it exists. A quick search for the package or a glance at the docs is enough. If the AI can't show you a real source, treat it as fiction.</p>
+    </div>
+
+    <h2><span class="num">02</span> The Infinite Rewrite</h2>
+    <p>
+      The app works. It's not pretty. You ask the AI to "clean it up." It rewrites half
+      the codebase. Now nothing works. You ask it to fix that. It rewrites again. You
+      spend the next three hours chasing a version that boots.
+    </p>
+    <blockquote>
+      "The code wasn't broken. Then I asked it to be better. Now it's broken. I miss the
+      code that was merely ugly."
+    </blockquote>
+    <div class="callout success">
+      <span class="callout-title">✅ The survival move</span>
+      <p>Never ask for a rewrite when a fix will do. Be specific: "add input validation to the login form" beats "refactor the auth." Save your progress (commit!) before any big change so you can always roll back.</p>
+    </div>
+
+    <h2><span class="num">03</span> Scope Creep on Autopilot</h2>
+    <p>
+      It starts with a to-do app. By lunch it has accounts, billing, real-time
+      collaboration, and a dark mode the AI added unprompted. None of it is finished.
+      The AI never says "that's enough" — it just keeps building.
+    </p>
+    <div class="callout warn">
+      <span class="callout-title">⚠️ The mistake</span>
+      <p>Letting the AI's eagerness set your roadmap. The model is a yes-machine. The fewer features, the fewer bugs.</p>
+    </div>
+    <div class="callout success">
+      <span class="callout-title">✅ The survival move</span>
+      <p>Write your feature list down before you start. Refer back to it often. "Ship the core, then stop" is a feature, not a failure.</p>
+    </div>
+
+    <h2><span class="num">04</span> The Black-Box Trap</h2>
+    <p>
+      The app works and you have no idea why. When it breaks, you can't debug what you
+      never understood. You describe the bug to the AI; it describes a fix back; neither
+      of you truly knows the terrain.
+    </p>
+    <div class="callout danger">
+      <span class="callout-title">🔥 The mistake</span>
+      <p>Shipping code you can't explain. "It works" is a snapshot. "I know how it works" is a strategy.</p>
+    </div>
+    <div class="callout success">
+      <span class="callout-title">✅ The survival move</span>
+      <p>Ask the AI to explain what it changed and why. Read the diff. You don't have to write every line, but you should be able to walk through the logic in plain language.</p>
+    </div>
+
+    <h2><span class="num">05</span> The Secret in the Code</h2>
+    <p>
+      The AI helpfully drops your database password and API keys straight into the source
+      file "so it's easy to find." It is easy to find. By everyone.
+    </p>
+    <div class="callout danger">
+      <span class="callout-title">🔥 The mistake</span>
+      <p>Hardcoding secrets, then pushing the code somewhere public. This is how apps get hijacked overnight.</p>
+    </div>
+    <div class="callout success">
+      <span class="callout-title">✅ The survival move</span>
+      <p>Keep secrets in environment variables, never in the code. Check that a <code>.gitignore</code> covers them before you commit anything. When in doubt, assume anything in the file can leak.</p>
+    </div>
+
+    <h2><span class="num">06</span> No Safety Net</h2>
+    <p>
+      There's no version control. There are no tests. The only "backup" is the undo
+      button and a prayer. One bad prompt and the last two days are gone.
+    </p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-emoji">🔄</div>
+        <div class="timeline-body">
+          <h3>Commit early, commit often</h3>
+          <p>Every working state is a save point. Git is the vibe coder's undo history.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-emoji">🧪</div>
+        <div class="timeline-body">
+          <h3>Test the important paths</h3>
+          <p>You don't need full coverage. You need to know the login and the checkout still work after a change.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-emoji">📦</div>
+        <div class="timeline-body">
+          <h3>Ship from a known state</h3>
+          <p>Deploy from a clean commit, not from "whatever's on my laptop right now."</p>
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="num">07</span> Trusting Too Far</h2>
+    <p>
+      The AI says the payment flow is secure. The AI says the data is validated. The AI
+      is sometimes a well-meaning intern who has read every book and built nothing.
+    </p>
+    <div class="callout warn">
+      <span class="callout-title">⚠️ The mistake</span>
+      <p>Outsourcing judgment, not just typing. Anything touching money, user data, or security needs a human pair of eyes — yours, or someone who knows what to look for.</p>
+    </div>
+    <div class="callout success">
+      <span class="callout-title">✅ The survival move</span>
+      <p>Keep humans in the loop for the risky bits. Use the AI to go fast on the boring parts; slow down where it counts. See <a href="deploy.html">the shipping guide</a> for what to check before launch.</p>
+    </div>
+
+    <div class="cta">
+      <p><strong>Want guardrails so these mistakes catch themselves?</strong></p>
+      <p>SaaSClaw bakes in safety nets for vibe coders — version control, secret protection, and a saner place to build.</p>
+      <a href="saasclaw.html">Meet SaaSClaw →</a>
+    </div>
+  </article>
+
+  <footer>
+    Vibe Coding 101 · Part of the <a href="saasclaw.html">SaaSClaw</a> guide series.
+    Learn more: <a href="index.html">The Guide</a> · <a href="prompting.html">Prompting</a> · <a href="tools.html">Toolkit</a> · <a href="glossary.html">Glossary</a>
+  </footer>
+</body>
+</html>

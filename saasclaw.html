@@ -54,6 +54,24 @@
     nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
     nav a:hover { color: var(--accent); }
 
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
     header {
       text-align: center;
       padding: 48px 0 40px;
@@ -231,9 +249,18 @@
 <body>
   <nav>
     <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
-    <a href="index.html">The Guide</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
     <a href="saasclaw.html">Meet SaaSClaw</a>
-    <a href="deploy.html">Shipping</a>
   </nav>
 
   <header>

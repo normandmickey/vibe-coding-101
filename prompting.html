@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompting for Vibe Coders — How to Talk to Your AI</title>
+  <meta name="description" content="The art of talking to AI: how to write prompts that get great code back. Context, clarity, and the words that actually move the needle.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
+    header {
+      text-align: center;
+      padding: 64px 0 40px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--soft);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      line-height: 1.1;
+      margin: 0 0 16px;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 1.18rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    article { margin-top: 16px; }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 48px 0 16px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 .num {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    h3 { font-size: 1.2rem; margin: 28px 0 10px; color: var(--accent-dark); }
+
+    p { margin: 0 0 18px; }
+
+    .lead { font-size: 1.18rem; color: var(--muted); }
+
+    a { color: var(--accent); }
+
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 8px; }
+
+    code {
+      background: var(--soft);
+      color: var(--accent-dark);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 0.9em;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    blockquote {
+      margin: 28px 0;
+      padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft);
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      color: var(--accent-dark);
+    }
+
+    .callout {
+      margin: 24px 0;
+      padding: 18px 22px;
+      border-radius: 12px;
+      border-left: 4px solid;
+    }
+    .callout.warn    { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+
+    .callout-title {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .card {
+      background: var(--soft);
+      padding: 18px 20px;
+      border-radius: 12px;
+    }
+
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+
+    .cta {
+      text-align: center;
+      margin-top: 48px;
+      padding: 36px 24px;
+      background: var(--soft);
+      border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Chapter 04 · The Conversation</span>
+    <h1>Prompting for Vibe Coders</h1>
+    <p class="tagline">Your AI can write almost anything — if you ask it right. Here's how to talk so the code listens.</p>
+  </header>
+
+  <article>
+    <p class="lead">
+      Vibe coding lives or dies on the prompt. The model isn't magic — it's a very fast,
+      very literal reader that does exactly what you describe, and nothing more. The gap between
+      <em>"make an app"</em> and <em>"make a responsive to-do app in React with local storage,
+      a dark-mode toggle, and a confetti animation on task completion"</em> is the gap between
+      a hobby and a working product.
+    </p>
+
+    <p>
+      This is the single highest-leverage skill in vibe coding. Get good at prompting and
+      everything else gets easier. Let's break down what actually moves the needle.
+    </p>
+
+    <!-- WHY PROMPTING MATTERS -->
+    <h2><span class="num">01</span> Why Prompting Is the Whole Game</h2>
+    <p>
+      When you "vibe code," you're not writing code — you're <strong>writing instructions for something
+      that writes code.</strong> That makes your prompt the blueprint. A vague blueprint gives you a
+      vague building. A sharp blueprint gives you something you can actually ship.
+    </p>
+    <p>
+      The good news: the principles are simple and learnable. You don't need to be clever or poetic.
+      You need to be <em>specific, structured, and consistent.</em>
+    </p>
+
+    <blockquote>
+      The model isn't guessing what you meant. It's reading what you wrote. If the output is wrong,
+      the prompt was first.
+    </blockquote>
+
+    <!-- ANATOMY OF A GOOD PROMPT -->
+    <h2><span class="num">02</span> Anatomy of a Good Prompt</h2>
+    <p>The prompts that get the best results tend to share five ingredients:</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🎯 Goal</h3>
+        <p>What are you building? State the end result in one clear sentence.</p>
+      </div>
+      <div class="card">
+        <h3>🧱 Stack</h3>
+        <p>Name the language, framework, and libraries. No ambiguity.</p>
+      </div>
+      <div class="card">
+        <h3>📋 Details</h3>
+        <p>The features, the edge cases, the look and feel. Spell them out.</p>
+      </div>
+      <div class="card">
+        <h3>📐 Constraints</h3>
+        <p>What <em>not</em> to do. File names, structure, compatibility limits.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-title">✅ Before → After</span>
+      <p><strong>Weak:</strong> <code>make a todo app</code></p>
+      <p><strong>Strong:</strong> <code>Build a single-page to-do app in React. Use functional components and hooks. Persist tasks to localStorage. Include a dark-mode toggle, the ability to edit and delete tasks, and a confetti animation when a task is marked complete. Make it mobile-responsive.</code></p>
+    </div>
+
+    <!-- CONTEXT IS KING -->
+    <h2><span class="num">03</span> Context Is King</h2>
+    <p>
+      Your prompt doesn't arrive in a vacuum — the AI also reads your existing files, previous messages,
+      and any rules you've set. That whole picture is the <strong>context</strong>, and the AI can only
+      use what's in it. Give it rich, relevant context and it'll nail the details. Starve it and it'll
+      guess — badly.
+    </p>
+    <p>Three ways to load the context in your favor:</p>
+    <ul>
+      <li><strong>Point at the right files.</strong> "Read <code>App.js</code> and add the new route there" beats "add a route."</li>
+      <li><strong>Bring the spec.</strong> Paste the API docs or design notes so it doesn't invent endpoints.</li>
+      <li><strong>Set standing rules.</strong> A system prompt like "always use TypeScript, never use <code>any</code>" saves you repeating yourself.</li>
+    </ul>
+
+    <div class="callout warn">
+      <span class="callout-title">⚠️ Context rot</span>
+      <p>
+        In a long session, the context fills with old, stale instructions that quietly drag down quality.
+        When a project shifts focus or you're starting a new feature, open a fresh session and feed it a
+        clean summary. Don't let yesterday's confusion haunt today's code.
+      </p>
+    </div>
+
+    <!-- ITERATE LIKE A PRO -->
+    <h2><span class="num">04</span> Iterate Like a Pro</h2>
+    <p>
+      Nobody gets it right on the first prompt. Pro vibe coders treat the conversation as a loop:
+      prompt → check the output → refine. The trick is knowing how to correct course without
+      confusing the model.
+    </p>
+    <ol>
+      <li><strong>Be specific about what's wrong.</strong> "The button looks off" is unhelpful. "The button should be full-width on mobile and use the accent color" is a fix.</li>
+      <li><strong>Quote the exact code.</strong> Point to the function or line — don't make the AI search.</li>
+      <li><strong>Ask for the diff.</strong> "Show me only the lines you changed" keeps edits reviewable.</li>
+      <li><strong>Explain the why.</strong> "Users will paste long URLs, so truncate at 40 chars" prevents the bug from coming back.</li>
+    </ol>
+
+    <blockquote>
+      Treat the AI like a brilliant but literal-minded junior dev. The clearer your feedback, the
+      faster it levels up.
+    </blockquote>
+
+    <!-- COMMON MISTAKES -->
+    <h2><span class="num">05</span> Prompts That Backfire</h2>
+
+    <div class="callout danger">
+      <span class="callout-title">🚫 "Just make it work"</span>
+      <p>
+        Hands the model total freedom — which sounds great until you get 400 lines of spaghetti with
+        three competing patterns. Define the shape you want first.
+      </p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-title">🚫 The kitchen-sink prompt</span>
+      <p>
+        One giant message asking for the whole app, the tests, the docs, and a deployment script.
+        It overwhelms the context and produces shallow work everywhere. Break it into steps.
+      </p>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-title">⚠️ Changing your mind silently</span>
+      <p>
+        If you switch direction mid-build, <em>say so explicitly.</em> "Actually, drop the auth for now
+        and focus on the dashboard" prevents the AI from quietly re-adding what you removed.
+      </p>
+    </div>
+
+    <!-- PROMPT TEMPLATES -->
+    <h2><span class="num">06</span> A Prompt You Can Steal</h2>
+    <p>Use this skeleton as a starting point and fill in the blanks:</p>
+    <blockquote>
+      "Build <strong>[feature]</strong> using <strong>[framework + language]</strong>. It should
+      <strong>[core behavior]</strong>. Here are the specifics: <strong>[details / edge cases]</strong>.
+      Constraints: <strong>[don't use X, follow Y pattern, keep it under Z]</strong>. Start by reading
+      <strong>[relevant files]</strong>, then show me the changes as a diff."
+    </blockquote>
+
+    <div class="cta">
+      <p><strong>Want prompting with training wheels?</strong></p>
+      <p style="color: var(--muted);">SaaSClaw keeps full project context so you never have to re-explain your stack every message.</p>
+      <a href="saasclaw.html">Meet SaaSClaw →</a>
+    </div>
+  </article>
+
+  <footer>
+    <p>🦞 Vibe Coding 101 · A field guide for the curious builder</p>
+  </footer>
+</body>
+</html>
