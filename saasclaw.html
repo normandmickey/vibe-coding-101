@@ -39,6 +39,7 @@
       padding: 16px 24px;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 20px;
       border-bottom: 1px solid #e2e8f0;
     }
@@ -243,6 +244,11 @@
       text-align: center;
       color: var(--muted);
       font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>

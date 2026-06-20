@@ -39,6 +39,7 @@
       padding: 16px 24px;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 20px;
       border-bottom: 1px solid #e2e8f0;
     }
@@ -172,9 +173,9 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
-      margin: 28px 0;
+      margin: 24px 0;
     }
 
     .card {
@@ -184,7 +185,7 @@
     }
 
     .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
-    .card p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+    .card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
 
     .cta {
       text-align: center;
