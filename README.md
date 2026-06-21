@@ -4,7 +4,7 @@
 
 A static multi-page website built with hand-written HTML and CSS. No frameworks, no build step, no JavaScript. Just open the files in a browser.
 
-🔗 **Live site:** [vibe-coding-101.preview.saasclaw.ai](https://vibe-coding-101.preview.saasclaw.ai)
+🔗 **Live site:** [vibe-coding-101.xyz](https://vibe-coding-101.xyz)
 
 ---
 
