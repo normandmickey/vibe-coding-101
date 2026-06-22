@@ -126,3 +126,5 @@ If you add or change a page, keep these rules so the site stays consistent:
 ---
 
 Built on [SaaSClaw](https://saasclaw.ai) — a better place to vibe code. 🦞
+
+- `ai-slop.html` — what AI slop is and how to avoid shipping it
