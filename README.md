@@ -22,11 +22,12 @@ It's structured as a small content site: a main guide, four topical deep-dives, 
 | [`prompting.html`](prompting.html) | Prompting for Vibe Coders | How to talk to your AI: clarity, context, the words that move the needle |
 | [`tools.html`](tools.html) | The Vibe Coder's Toolkit | The stack — AI editors, models, and where to host what you build |
 | [`mistakes.html`](mistakes.html) | Mistakes & How to Survive Them | 7 classic mistakes, each with a survival move |
+| [`ai-slop.html`](ai-slop.html) | AI Slop | What AI slop is, how to spot it, and how to avoid making it |
 | [`deploy.html`](deploy.html) | "It Works On My Machine" | The unglamorous truth about shipping and maintaining apps |
 | [`glossary.html`](glossary.html) | Vibe Coding Glossary | Theme-grouped definitions (Basics / Tooling / Danger Zones) with difficulty pills |
 | [`saasclaw.html`](saasclaw.html) | Meet SaaSClaw | The platform page — why SaaSClaw is a better place to vibe code |
 
-All seven pages are cross-linked through a shared navigation bar.
+All eight pages are cross-linked through a shared navigation bar.
 
 ## Design system
 
@@ -107,6 +108,7 @@ vibe-coding-101/
 ├── prompting.html    # Prompting deep-dive
 ├── tools.html        # Toolkit / stack overview
 ├── mistakes.html     # Common mistakes + survival guide
+├── ai-slop.html      # AI slop guide
 ├── deploy.html       # Shipping & maintenance survival guide
 ├── glossary.html     # Term definitions (theme-grouped)
 ├── saasclaw.html     # SaaSClaw product page
