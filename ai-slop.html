@@ -80,17 +80,17 @@
       font-size: 0.8rem; font-weight: 700;
       letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--accent); background: var(--soft);
-      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;
     }
 
     h1 {
-      font-size: 2.6rem; line-height: 1.1; margin: 0 0 16px;
+      font-size: 2.4rem; line-height: 1.15; margin: 0 0 12px;
       color: #0f172a; letter-spacing: -0.02em;
     }
 
-    .tagline { font-size: 1.18rem; color: var(--muted); max-width: 580px; margin: 0 auto; }
+    .tagline { font-size: 1.15rem; color: var(--muted); margin: 0; }
 
-    article { margin-top: 16px; }
+    article { padding-top: 8px; }
 
     h2 {
       font-size: 1.6rem; margin: 48px 0 16px; color: #0f172a;
@@ -169,6 +169,7 @@
         <a href="index.html">The Guide</a>
         <a href="prompting.html">Prompting</a>
         <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
         <a href="ai-slop.html">AI Slop</a>
         <a href="deploy.html">Shipping</a>
       </div>
@@ -179,74 +180,135 @@
 
   <header>
     <span class="eyebrow">Chapter 05 · Quality Control</span>
-    <h1>AI Slop</h1>
-    <p class="tagline">How to recognize low-quality AI output and keep your work sharp.</p>
+    <h1>Spotting & Surviving AI Slop</h1>
+    <p class="tagline">What "good enough" becomes when it becomes the whole strategy.</p>
   </header>
 
   <article>
     <p class="lead">
-      AI slop is low-effort, generic, repetitive content that looks polished at first glance
-      but says very little. It shows up in blog posts, code, product copy, design, and even
-      entire apps — and the faster you can spot it, the less of it you'll ship.
+      AI slop is low-effort, generic, repetitive content that looks polished at first
+      glance but says very little. It shows up in blog posts, code, product copy, design,
+      and even entire apps. Here's how to recognize it — and how to stop making it.
     </p>
 
-    <h2><span class="num">01</span> How to spot AI slop</h2>
-    <p>Slop has tells. Once you've seen a few, they jump out. The four classic signs:</p>
-    <h3>It sounds confident, but empty</h3>
-    <p>Slop leans on broad statements like "in today's fast-paced world" or "unlock your full potential" without adding anything concrete. The sentence is grammatically perfect and means nothing.</p>
-    <h3>It repeats itself</h3>
-    <p>If the same idea shows up in three different phrasings, the content is padding — not communicating. The model ran out of things to say and started echoing itself.</p>
-    <h3>It avoids specifics</h3>
-    <p>Real writing names tradeoffs, examples, numbers, and constraints. Slop stays safely generic because specifics are risky, and the model defaults to safe.</p>
-    <h3>It has no opinion</h3>
-    <p>Good content makes a point. Slop tries to please everyone and ends up saying nothing memorable.</p>
-
+    <h2><span class="num">01</span> It Sounds Confident, But Empty</h2>
+    <p>
+      Slop loves broad statements: "in today's fast-paced world," "unlock your full
+      potential," "seamlessly leverage synergies." The phrasing is smooth and certain,
+      but if you stop and ask <em>what did that actually say?</em>, the answer is: not
+      much. Confidence is free for a language model. It costs nothing to sound
+      authoritative about nothing.
+    </p>
     <div class="callout warn">
-      <span class="callout-title">🚩 Rule of thumb</span>
-      <p>If you wouldn't publish it after a quick human edit, it's probably slop. The polish is the trap — it feels finished precisely because it's been smoothed into nothing.</p>
+      <span class="callout-title">⚠️ The tell</span>
+      <p>If you can remove a sentence and the paragraph loses zero meaning, that sentence was slop.</p>
     </div>
 
-    <h2><span class="num">02</span> Why AI slop happens</h2>
-    <p>Slop isn't a bug in the model. It's what you get when the process rewards volume over judgment:</p>
-    <ul>
-      <li>People ask the AI for a finished result instead of a rough draft.</li>
-      <li>Teams optimize for speed and output instead of usefulness.</li>
-      <li>Nobody edits for voice, accuracy, or the actual audience.</li>
-      <li>Prompts are vague, so the output is vague too.</li>
-      <li>There's no human taste layer deciding what should be cut.</li>
-    </ul>
-
-    <h2><span class="num">03</span> How to avoid making it</h2>
-    <p>The fix isn't using AI less — it's using it differently. Treat the model as a starting point, not a finish line:</p>
-    <ul>
-      <li>Start with a clear audience and a single goal.</li>
-      <li>Ask for an outline, not a final answer, when the topic matters.</li>
-      <li>Provide examples, constraints, and real source material.</li>
-      <li>Cut filler aggressively. If a sentence can go, it should.</li>
-      <li>Replace generic language with specifics — names, numbers, real details.</li>
-      <li>Add your own point of view. That's the part the model can't fake.</li>
-      <li>Read it out loud. Robotic phrasing is obvious when spoken.</li>
-      <li>Prefer fewer, better outputs over many mediocre ones.</li>
-    </ul>
-    <div class="callout success">
-      <span class="callout-title">✅ The mindset</span>
-      <p>AI should reduce blank-page friction, not replace judgment. Taste is a feature — it's the only thing standing between a draft and actual slop.</p>
-    </div>
-
-    <h2><span class="num">04</span> Slop vs. something better</h2>
-    <p>The difference is concrete. Here's the same idea written two ways:</p>
+    <h2><span class="num">02</span> It Repeats Itself</h2>
+    <p>
+      The same idea shows up three different ways in three different paragraphs — not
+      because it's building on a point, but because the model is padding for length. You
+      read a wall of text and walk away with one thin thought that could've been a
+      sentence.
+    </p>
     <blockquote>
-      "Our innovative solution leverages cutting-edge AI to transform your workflow and drive unprecedented results."
+      "I asked for an intro. I got 600 words that mean 'in conclusion, our company does
+      things, and those things are good.'"
     </blockquote>
-    <div class="callout success">
-      <span class="callout-title">Better</span>
-      <p>"This tool summarizes customer calls into action items, so your team can follow up faster and stop losing notes in Slack."</p>
+
+    <h2><span class="num">03</span> It Avoids Specifics</h2>
+    <p>
+      Real writing names tradeoffs, numbers, constraints, and examples. Slop stays
+      safely generic — it never commits to an opinion, a figure, or a real-world case,
+      because specifics are where you can be wrong. Generic claims are un-falsifiable,
+      and un-falsifiable claims are the slop's natural habitat.
+    </p>
+    <div class="callout danger">
+      <span class="callout-title">🔍 Compare</span>
+      <p><strong>Slop:</strong> "Our platform delivers powerful, scalable solutions for modern teams." <br>
+      <strong>Real:</strong> "Our platform runs on 4 regions, auto-scales to 10k req/s, and costs $0.02 per build."</p>
     </div>
-    <p>The second one names a real job, a real tool, and a real pain. The first one could describe anything, which means it describes nothing.</p>
+
+    <h2><span class="num">04</span> It Has No Point of View</h2>
+    <p>
+      Good content makes a call. It takes a side, recommends an approach, warns you off a
+      bad one. Slop tries to please everyone and ends up memorable to no one — a heap of
+      "on the other hand" that never reaches a conclusion. If a piece could have been
+      written about any product in any industry, it wasn't written about yours.
+    </p>
+
+    <h2>Why AI slop happens</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-emoji">🎯</div>
+        <div class="timeline-body">
+          <h3>Asking for a finished result, not a draft</h3>
+          <p>When you want the AI to hand you a done thing, it optimizes for surface polish — which is exactly where slop lives.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-emoji">⚡</div>
+        <div class="timeline-body">
+          <h3>Optimizing for speed and volume</h3>
+          <p>"Generate ten posts by noon" is a slop factory. Quantity without editing is just faster garbage.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-emoji">🚫</div>
+        <div class="timeline-body">
+          <h3>No one edits for voice or accuracy</h3>
+          <p>The raw output ships untouched. No human point of view, no fact-check, no taste applied.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-emoji">💬</div>
+        <div class="timeline-body">
+          <h3>Vague prompts in, vague content out</h3>
+          <p>"Write something about marketing" gives you the median of everything ever written about marketing — which is slop.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>How to avoid making it</h2>
+    <p>
+      The antidote to slop is the same as it's always been: an opinion, some evidence,
+      and a human willing to cut. Treat AI output as a rough first draft, not a finished
+      product. Then do the work the model can't.
+    </p>
+    <div class="callout success">
+      <span class="callout-title">✅ The fix</span>
+      <p>Use AI as a draft partner — brainstorm, outline, unblock. Then edit hard for clarity, real examples, and a point of view the reader can't get anywhere else.</p>
+    </div>
+
+    <h2>Prompting to reduce slop</h2>
+    <p>
+      You can keep slop out before it's written by changing how you ask. Give the model a
+      target voice, a specific audience, real constraints, and a reason to commit to an
+      opinion. The more you nail down, the less room there is for generic filler.
+    </p>
+    <div class="callout warn">
+      <span class="callout-title">📝 Slop-proof prompt ingredients</span>
+      <p>
+        <strong>Role &amp; voice:</strong> "You're a senior engineer who's shipped this." <br>
+        <strong>Specifics:</strong> Name the tech, the numbers, the tradeoff. <br>
+        <strong>Constraints:</strong> Word count, format, what <em>not</em> to say. <br>
+        <strong>An opinion:</strong> "Take a position and defend it — don't hedge."
+      </p>
+    </div>
+
+    <h2>The bottom line</h2>
+    <p>
+      AI slop isn't a technology problem; it's an editing problem. The models are happy
+      to write well — or badly — depending on what you ask for and what you accept. Hold
+      the output to the same standard you'd hold a human writer, and slop disappears on
+      its own. Want the deeper playbook? See the <a href="prompting.html">prompting
+      guide</a> and the <a href="mistakes.html">mistakes survival guide</a>.
+    </p>
 
     <div class="cta">
-      <p>Got the content sharp? Make sure the code and the launch are too.</p>
-      <a href="mistakes.html">Read the survival guide →</a>
+      <p><strong>Want a build environment that keeps quality high?</strong></p>
+      <p>SaaSClaw gives vibe coders the guardrails to ship without the slop — version control, previews, and a saner place to build.</p>
+      <a href="saasclaw.html">Meet SaaSClaw →</a>
     </div>
   </article>
 
