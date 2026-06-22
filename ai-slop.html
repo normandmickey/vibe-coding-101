@@ -15,10 +15,14 @@
       --soft: #f5f3ff;
       --warn-bg: #fef3c7;
       --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
       --success-bg: #dcfce7;
       --success-border: #22c55e;
     }
+
     * { box-sizing: border-box; }
+
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       max-width: 800px;
@@ -28,6 +32,7 @@
       line-height: 1.7;
       background: var(--bg);
     }
+
     nav {
       max-width: 800px;
       margin: 0 auto;
@@ -38,6 +43,7 @@
       gap: 20px;
       border-bottom: 1px solid #e2e8f0;
     }
+
     nav .brand {
       font-weight: 800;
       font-size: 1.05rem;
@@ -45,195 +51,208 @@
       text-decoration: none;
       letter-spacing: -0.01em;
     }
+
     nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
     nav a:hover { color: var(--accent); }
-    header { text-align: center; padding: 64px 0 40px; }
-    h1 {
-      font-size: 2.6rem;
-      margin: 0 0 12px;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, var(--accent), #ec4899);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
     }
-    header .tagline { font-size: 1.15rem; color: var(--muted); margin: 0; }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
+    header { text-align: center; padding: 64px 0 40px; }
+
     .eyebrow {
       display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--soft);
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 20px;
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); background: var(--soft);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
     }
-    main { margin-top: 16px; }
+
+    h1 {
+      font-size: 2.6rem; line-height: 1.1; margin: 0 0 16px;
+      color: #0f172a; letter-spacing: -0.02em;
+    }
+
+    .tagline { font-size: 1.18rem; color: var(--muted); max-width: 580px; margin: 0 auto; }
+
+    article { margin-top: 16px; }
+
     h2 {
-      font-size: 1.6rem;
-      margin: 48px 0 16px;
-      color: #0f172a;
+      font-size: 1.6rem; margin: 48px 0 16px; color: #0f172a;
+      display: flex; align-items: center; gap: 10px;
     }
+    h2 .num { font-size: 0.85rem; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
     h3 { font-size: 1.2rem; margin: 28px 0 10px; color: var(--accent-dark); }
+
     p { margin: 0 0 18px; }
     .lead { font-size: 1.18rem; color: var(--muted); }
     a { color: var(--accent); }
-    ul { padding-left: 22px; }
-    li { margin-bottom: 8px; }
-    .card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+
+    code {
+      background: var(--soft); color: var(--accent-dark);
+      padding: 2px 6px; border-radius: 5px; font-size: 0.9em;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
     }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-    .example {
-      background: var(--soft);
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 18px;
-    }
+
     .callout {
-      margin-top: 18px;
-      padding: 16px 18px;
-      border-radius: 12px;
-      background: var(--warn-bg);
-      border-left: 4px solid var(--warn-border);
+      margin: 24px 0; padding: 18px 22px;
+      border-radius: 12px; border-left: 4px solid;
     }
-    .callout.green {
-      background: var(--success-bg);
-      border-left-color: var(--success-border);
+    .callout.warn    { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout-title { display: block; font-weight: 700; margin-bottom: 6px; }
+
+    blockquote {
+      margin: 28px 0; padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft); border-radius: 0 12px 12px 0;
+      font-style: italic; color: var(--accent-dark);
     }
-    .footer {
-      margin-top: 56px;
-      padding-top: 20px;
-      border-top: 1px solid #e2e8f0;
-      color: var(--muted);
-      font-size: 0.95rem;
-      text-align: center;
+
+    .timeline { margin: 26px 0; }
+    .timeline-item {
+      display: flex; gap: 16px; padding: 18px 0;
+      border-bottom: 1px solid #e2e8f0;
     }
-    @media (max-width: 640px) {
-      body, nav { padding-left: 16px; padding-right: 16px; }
-      header { padding: 44px 0 28px; }
-      h1 { font-size: 2.15rem; }
-      .grid-2 { grid-template-columns: 1fr; }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-emoji {
+      font-size: 1.6rem; line-height: 1; flex-shrink: 0;
+    }
+    .timeline-body h3 { margin: 0 0 6px; font-size: 1.1rem; color: var(--accent-dark); }
+    .timeline-body p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+
+    .cta {
+      text-align: center; margin-top: 48px; padding: 36px 24px;
+      background: var(--soft); border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block; margin-top: 8px;
+      background: var(--accent); color: #fff;
+      padding: 12px 28px; border-radius: 10px;
+      text-decoration: none; font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center; color: var(--muted); font-size: 0.85rem;
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
     }
   </style>
 </head>
 <body>
   <nav>
-    <a class="brand" href="index.html">vibe-coding-101</a>
-    <a href="index.html">Home</a>
-    <a href="prompting.html">Prompting</a>
-    <a href="frameworks.html">Frameworks</a>
-    <a href="tools.html">Tools</a>
-    <a href="mistakes.html">Mistakes</a>
-    <a href="future.html">Future</a>
-    <a href="deploy.html">Deploy</a>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="ai-slop.html">AI Slop</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
     <a href="glossary.html">Glossary</a>
-    <a href="saasclaw.html">SaaSClaw</a>
-    <a href="ai-slop.html">AI Slop</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
   </nav>
 
   <header>
-    <div class="eyebrow">Quality control</div>
+    <span class="eyebrow">Chapter 05 · Quality Control</span>
     <h1>AI Slop</h1>
     <p class="tagline">How to recognize low-quality AI output and keep your work sharp.</p>
   </header>
 
-  <main>
-    <section class="card">
-      <p class="lead">AI slop is low-effort, generic, repetitive content that looks polished at first glance but says very little. It can show up in blog posts, code, product copy, design, and even entire apps.</p>
-    </section>
+  <article>
+    <p class="lead">
+      AI slop is low-effort, generic, repetitive content that looks polished at first glance
+      but says very little. It shows up in blog posts, code, product copy, design, and even
+      entire apps — and the faster you can spot it, the less of it you'll ship.
+    </p>
 
-    <section class="card">
-      <h2>How to spot AI slop</h2>
-      <div class="grid-2">
-        <div class="example">
-          <h3>It sounds confident, but empty</h3>
-          <p>Slop often uses broad statements like “in today’s fast-paced world” or “unlock your full potential” without adding anything concrete.</p>
-        </div>
-        <div class="example">
-          <h3>It repeats itself</h3>
-          <p>If the same idea appears in three different ways, the content may be padding instead of communicating.</p>
-        </div>
-        <div class="example">
-          <h3>It avoids specifics</h3>
-          <p>Real writing names tradeoffs, examples, numbers, and constraints. Slop stays safely generic.</p>
-        </div>
-        <div class="example">
-          <h3>It has no opinion</h3>
-          <p>Good content makes a point. Slop tries to please everyone and ends up saying nothing memorable.</p>
-        </div>
-      </div>
-    </section>
+    <h2><span class="num">01</span> How to spot AI slop</h2>
+    <p>Slop has tells. Once you've seen a few, they jump out. The four classic signs:</p>
+    <h3>It sounds confident, but empty</h3>
+    <p>Slop leans on broad statements like "in today's fast-paced world" or "unlock your full potential" without adding anything concrete. The sentence is grammatically perfect and means nothing.</p>
+    <h3>It repeats itself</h3>
+    <p>If the same idea shows up in three different phrasings, the content is padding — not communicating. The model ran out of things to say and started echoing itself.</p>
+    <h3>It avoids specifics</h3>
+    <p>Real writing names tradeoffs, examples, numbers, and constraints. Slop stays safely generic because specifics are risky, and the model defaults to safe.</p>
+    <h3>It has no opinion</h3>
+    <p>Good content makes a point. Slop tries to please everyone and ends up saying nothing memorable.</p>
 
-    <section class="card">
-      <h2>Why AI slop happens</h2>
-      <ul>
-        <li>People ask AI for a finished result instead of a rough draft.</li>
-        <li>Teams optimize for speed and volume instead of usefulness.</li>
-        <li>No one edits for voice, accuracy, or audience.</li>
-        <li>Prompts are vague, so the output is vague too.</li>
-        <li>There’s no human taste layer to decide what should be cut.</li>
-      </ul>
-      <div class="callout">
-        <strong>Rule of thumb:</strong> if you wouldn’t publish it after a quick human edit, it’s probably slop.
-      </div>
-    </section>
+    <div class="callout warn">
+      <span class="callout-title">🚩 Rule of thumb</span>
+      <p>If you wouldn't publish it after a quick human edit, it's probably slop. The polish is the trap — it feels finished precisely because it's been smoothed into nothing.</p>
+    </div>
 
-    <section class="card">
-      <h2>How to avoid making it</h2>
-      <div class="grid-2">
-        <div>
-          <ul>
-            <li>Start with a clear audience and goal.</li>
-            <li>Ask for an outline, not a final answer, when the topic matters.</li>
-            <li>Provide examples, constraints, and source material.</li>
-            <li>Cut filler aggressively.</li>
-            <li>Check facts and replace generic language with real details.</li>
-          </ul>
-        </div>
-        <div>
-          <ul>
-            <li>Add your own point of view.</li>
-            <li>Use AI to brainstorm, summarize, and draft, then rewrite.</li>
-            <li>Read it out loud to catch robotic phrasing.</li>
-            <li>Prefer fewer, better outputs over many mediocre ones.</li>
-            <li>Remember: taste is a feature.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="callout green">
-        <strong>Best practice:</strong> AI should reduce blank-page friction, not replace judgment.
-      </div>
-    </section>
+    <h2><span class="num">02</span> Why AI slop happens</h2>
+    <p>Slop isn't a bug in the model. It's what you get when the process rewards volume over judgment:</p>
+    <ul>
+      <li>People ask the AI for a finished result instead of a rough draft.</li>
+      <li>Teams optimize for speed and output instead of usefulness.</li>
+      <li>Nobody edits for voice, accuracy, or the actual audience.</li>
+      <li>Prompts are vague, so the output is vague too.</li>
+      <li>There's no human taste layer deciding what should be cut.</li>
+    </ul>
 
-    <section class="card">
-      <h2>Examples of the difference</h2>
-      <div class="grid-2">
-        <div class="example">
-          <h3>Slop</h3>
-          <p>“Our innovative solution leverages cutting-edge AI to transform your workflow and drive unprecedented results.”</p>
-        </div>
-        <div class="example">
-          <h3>Better</h3>
-          <p>“This tool summarizes customer calls into action items so your team can follow up faster and stop losing notes in Slack.”</p>
-        </div>
-      </div>
-    </section>
-  </main>
+    <h2><span class="num">03</span> How to avoid making it</h2>
+    <p>The fix isn't using AI less — it's using it differently. Treat the model as a starting point, not a finish line:</p>
+    <ul>
+      <li>Start with a clear audience and a single goal.</li>
+      <li>Ask for an outline, not a final answer, when the topic matters.</li>
+      <li>Provide examples, constraints, and real source material.</li>
+      <li>Cut filler aggressively. If a sentence can go, it should.</li>
+      <li>Replace generic language with specifics — names, numbers, real details.</li>
+      <li>Add your own point of view. That's the part the model can't fake.</li>
+      <li>Read it out loud. Robotic phrasing is obvious when spoken.</li>
+      <li>Prefer fewer, better outputs over many mediocre ones.</li>
+    </ul>
+    <div class="callout success">
+      <span class="callout-title">✅ The mindset</span>
+      <p>AI should reduce blank-page friction, not replace judgment. Taste is a feature — it's the only thing standing between a draft and actual slop.</p>
+    </div>
 
-  <footer class="footer">
-    <p>Part of the <a href="index.html">vibe-coding-101</a> guide.</p>
+    <h2><span class="num">04</span> Slop vs. something better</h2>
+    <p>The difference is concrete. Here's the same idea written two ways:</p>
+    <blockquote>
+      "Our innovative solution leverages cutting-edge AI to transform your workflow and drive unprecedented results."
+    </blockquote>
+    <div class="callout success">
+      <span class="callout-title">Better</span>
+      <p>"This tool summarizes customer calls into action items, so your team can follow up faster and stop losing notes in Slack."</p>
+    </div>
+    <p>The second one names a real job, a real tool, and a real pain. The first one could describe anything, which means it describes nothing.</p>
+
+    <div class="cta">
+      <p>Got the content sharp? Make sure the code and the launch are too.</p>
+      <a href="mistakes.html">Read the survival guide →</a>
+    </div>
+  </article>
+
+  <footer>
+    Vibe Coding 101 · Part of the <a href="saasclaw.html">SaaSClaw</a> guide series.
+    Learn more: <a href="index.html">The Guide</a> · <a href="prompting.html">Prompting</a> · <a href="tools.html">Toolkit</a> · <a href="glossary.html">Glossary</a>
   </footer>
 </body>
 </html>
