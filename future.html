@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Future of Vibe Coding — Will We Ever Go Back to IDEs?</title>
+  <meta name="description" content="Three futures for vibe coding, what survives in all of them, and the one trap nobody talks about.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+
+    header {
+      text-align: center;
+      padding: 64px 0 40px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--soft);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      line-height: 1.1;
+      margin: 0 0 16px;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 1.18rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    article { margin-top: 16px; }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 48px 0 16px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 .num {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    h3 { font-size: 1.2rem; margin: 28px 0 10px; color: var(--accent-dark); }
+
+    p { margin: 0 0 18px; }
+
+    .lead { font-size: 1.18rem; color: var(--muted); }
+
+    a { color: var(--accent); }
+
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 8px; }
+
+    code {
+      background: var(--soft);
+      color: var(--accent-dark);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 0.9em;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    blockquote {
+      margin: 28px 0;
+      padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft);
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      color: var(--accent-dark);
+    }
+
+    .callout {
+      margin: 24px 0;
+      padding: 18px 22px;
+      border-radius: 12px;
+      border-left: 4px solid;
+    }
+    .callout.warn    { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+
+    .callout-title {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      background: var(--soft);
+      padding: 18px 20px;
+      border-radius: 12px;
+    }
+
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+
+    .cta {
+      text-align: center;
+      margin-top: 48px;
+      padding: 36px 24px;
+      background: var(--soft);
+      border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="ai-slop.html">AI Slop</a>
+        <a href="future.html">The Future</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Chapter 06 · The Horizon</span>
+    <h1>The Future of Vibe Coding</h1>
+    <p class="tagline">Will we ever go back to IDEs? Three futures, what survives in all of them, and the one trap nobody talks about.</p>
+  </header>
+
+  <article>
+    <p class="lead">
+      Every few months, someone declares that vibe coding is a fad. "Real developers use IDEs."
+      "AI is a crutch." "You'll grow out of it." Let's take that seriously and ask: what does the
+      future actually look like?
+    </p>
+
+    <p>
+      Here's the reframe: <strong>IDEs aren't dying.</strong> The question is what they're <em>for</em>
+      now. The editor isn't going away — but the act of sitting down and typing code by hand is
+      already starting to feel like writing assembly. Not gone. Just... not the default anymore.
+    </p>
+
+    <!-- THREE FUTURES -->
+    <h2><span class="num">01</span> Three Futures</h2>
+    <p>
+      Nobody knows which one we're heading toward, but these are the realistic branches.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🖥️ IDE Nostalgia World</h3>
+        <p>
+          Power users keep the terminal. They write code by hand because they enjoy it, the same
+          way people still write letters by hand. Vibe coding is for "normies." The IDE becomes
+          a craft tool, not a productivity tool.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🔀 Hybrid World</h3>
+        <p>
+          The IDE becomes a viewer, not a writer. You vibe in chat, the AI generates the files,
+          and you open the IDE to inspect, tweak, and debug. Hand-writing code is reserved for
+          the tricky 5% the AI can't quite nail.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🚀 Full Vibe World</h3>
+        <p>
+          You never see the files. You describe what you want, the system builds it, and the
+          "editor" is a conversation. Code is like compiled machine code today — it exists, but
+          no human reads it directly.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      The honest answer: we're probably heading to <strong>Hybrid World</strong>, with slow drift
+      toward Full Vibe over a decade. IDE Nostalgia World persists the way vinyl does — a niche
+      of people who prefer the tactile feel, and there's nothing wrong with that.
+    </p>
+
+    <!-- WHAT SURVIVES -->
+    <h2><span class="num">02</span> What Survives in Every Future</h2>
+    <p>
+      Some skills matter regardless of which world we end up in. If you're worried about what to
+      learn, start here:
+    </p>
+
+    <ul>
+      <li><strong>Taste.</strong> Knowing what looks good, what feels right, what's worth building. No model gives you this.</li>
+      <li><strong>Debugging instinct.</strong> When something breaks, you need to know <em>where to look</em>. The AI can fix it, but you have to point it in the right direction.</li>
+      <li><strong>Asking good questions.</strong> The prompt is the program. Vague in, vague out.</li>
+      <li><strong>Knowing when to verify.</strong> The AI is confident and wrong about 10% of the time. If you can't spot that 10%, you ship bugs.</li>
+    </ul>
+
+    <div class="callout success">
+      <span class="callout-title">✅ The good news</span>
+      <p>None of these skills require knowing syntax. They require <em>thinking clearly</em> — which is the part of programming that was always hard anyway.</p>
+    </div>
+
+    <!-- TIMELINE -->
+    <h2><span class="num">03</span> A Rough Timeline (Take With Salt)</span></h2>
+    <p>
+      Predictions are free, and worth every penny. But if you held a gun to my head:
+    </p>
+
+    <ul>
+      <li><strong>Near-term (1–2 years):</strong> Hybrid World emerges. Most developers use AI for boilerplate, tests, and first drafts. IDEs get "accept suggestion" as a core interaction, not a plugin.</li>
+      <li><strong>Mid-term (3–5 years):</strong> Vibe coding becomes the default for new projects. Greenfield apps are built conversationally. IDEs pivot to inspection and debugging tools. "Code review" means reviewing AI output, not peer output.</li>
+      <li><strong>Long-term (5–10 years):</strong> Full Vibe World starts to appear for certain domains — simple web apps, CRUD tools, prototypes. The idea of hand-writing a React component feels like hand-writing CSS in 2015: technically possible, why would you?</li>
+    </ul>
+
+    <div class="callout warn">
+      <span class="callout-title">⚠️ These are guesses</span>
+      <p>The honest truth: nobody knows. AI progress has been nonlinear. We could hit a wall next year or have AGI building entire systems by Tuesday. Plan for hybrid, stay flexible.</p>
+    </div>
+
+    <!-- THE ONE TRAP -->
+    <h2><span class="num">04</span> The One Trap Nobody Talks About</h2>
+    <p>
+      Here's the real danger, and it's not what you think.
+    </p>
+
+    <p>
+      It's not "the AI will replace you." It's not "you'll lose your job." The trap is simpler and
+      more insidious:
+    </p>
+
+    <blockquote>
+      You stop being able to read your own code.
+    </blockquote>
+
+    <p>
+      When you write code by hand, you build a mental model. You know why every line is there.
+      When the AI writes it, you get the output without the understanding. The app works — until
+      it doesn't, and suddenly you're staring at 4,000 lines of code you can't debug because you
+      didn't write any of it.
+    </p>
+
+    <div class="callout danger">
+      <span class="callout-title">🚨 The trap</span>
+      <p>
+        Vibe coding without comprehension is building on sand. The AI can generate a castle, but
+        when the tide comes in, you're the one who has to fix it. And if you never learned to read
+        the code, you can't.
+      </p>
+    </div>
+
+    <p>
+      The fix isn't to stop vibe coding. It's to <strong>read what the AI writes.</strong> Every
+      time. Understand the shape of it. Ask "why did you do it this way?" when something looks
+      unfamiliar. Treat the generated code like a colleague's pull request — review it before you
+      ship it.
+    </p>
+
+    <p>
+      The builders who thrive in the future won't be the ones who write the best code. They'll be
+      the ones who can <em>read</em> the best code — even code they didn't write.
+    </p>
+
+    <div class="cta">
+      <p><strong>That's the future.</strong> The tools will change. The skills won't.</p>
+      <a href="prompting.html">← Back to Prompting</a>
+    </div>
+  </article>
+
+  <footer>
+    <p>🦞 Vibe Coding 101 · A field guide for the curious builder</p>
+  </footer>
+</body>
+</html>
+
+<!-- AI Slop link added -->

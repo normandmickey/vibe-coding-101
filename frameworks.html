@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Best Frameworks for Vibe Coding — Tier Ranking</title>
+  <meta name="description" content="Which frameworks play nice with AI, which ones fight you, and which to pick for your next vibe-coded project.">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent-dark: #5b21b6;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --soft: #f5f3ff;
+      --warn-bg: #fef3c7;
+      --warn-border: #f59e0b;
+      --danger-bg: #fee2e2;
+      --danger-border: #ef4444;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+    nav {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    nav .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+    nav details.nav-dropdown { position: relative; }
+    nav details.nav-dropdown > summary {
+      list-style: none; cursor: pointer;
+      color: var(--muted); font-weight: 600; font-size: 0.92rem;
+    }
+    nav details.nav-dropdown > summary::-webkit-details-marker { display: none; }
+    nav details.nav-dropdown > summary:hover { color: var(--accent); }
+    nav details.nav-dropdown[open] > summary { color: var(--accent); }
+    nav .dropdown-menu {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 100;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    nav .dropdown-menu a { padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; }
+    nav .dropdown-menu a:hover { background: var(--soft); }
+    header { text-align: center; padding: 64px 0 40px; }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--soft);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2.6rem;
+      line-height: 1.1;
+      margin: 0 0 16px;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .tagline {
+      font-size: 1.18rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    article { margin-top: 16px; }
+    h2 {
+      font-size: 1.6rem;
+      margin: 48px 0 16px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .num {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    h3 { font-size: 1.2rem; margin: 28px 0 10px; color: var(--accent-dark); }
+    p { margin: 0 0 18px; }
+    .lead { font-size: 1.18rem; color: var(--muted); }
+    a { color: var(--accent); }
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    code {
+      background: var(--soft);
+      color: var(--accent-dark);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 0.9em;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    blockquote {
+      margin: 28px 0;
+      padding: 18px 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--soft);
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      color: var(--accent-dark);
+    }
+    .callout {
+      margin: 24px 0;
+      padding: 18px 22px;
+      border-radius: 12px;
+      border-left: 4px solid;
+    }
+    .callout.warn    { background: var(--warn-bg);    border-color: var(--warn-border); }
+    .callout.danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+    .callout.success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout-title {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--soft);
+      padding: 18px 20px;
+      border-radius: 12px;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+    .tier-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .tier-s { background: var(--success-bg); color: var(--success-border); }
+    .tier-a { background: var(--soft); color: var(--accent); }
+    .tier-b { background: var(--warn-bg); color: var(--warn-border); }
+    .tier-c { background: var(--danger-bg); color: var(--danger-border); }
+    .cta {
+      text-align: center;
+      margin-top: 48px;
+      padding: 36px 24px;
+      background: var(--soft);
+      border-radius: 16px;
+    }
+    .cta a {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">🦞 Vibe Coding 101</a>
+    <details class="nav-dropdown">
+      <summary>Guides ▾</summary>
+      <div class="dropdown-menu">
+        <a href="index.html">The Guide</a>
+        <a href="prompting.html">Prompting</a>
+        <a href="tools.html">Toolkit</a>
+        <a href="mistakes.html">Mistakes</a>
+        <a href="ai-slop.html">AI Slop</a>
+        <a href="frameworks.html">Frameworks</a>
+        <a href="future.html">The Future</a>
+        <a href="deploy.html">Shipping</a>
+      </div>
+    </details>
+    <a href="glossary.html">Glossary</a>
+    <a href="saasclaw.html">Meet SaaSClaw</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow">Chapter 07 · The Stack</span>
+    <h1>Best Frameworks for Vibe Coding</h1>
+    <p class="tagline">Which frameworks play nice with AI, which ones fight you, and what to pick for your next project.</p>
+  </header>
+
+  <article>
+    <p class="lead">
+      Here's the question nobody asks: <em>does this framework work well with AI?</em> Not "is it
+      good" in the abstract — but "when the AI generates 200 lines of it, how much do I have to
+      fix?"
+    </p>
+
+    <p>
+      Some frameworks are a vibe coder's dream. Others are a nightmare of configuration, magic
+      conventions, and edge cases that confuse the model. Let's rank them.
+    </p>
+
+    <!-- THE CHECKLIST -->
+    <h2><span class="num">01</span> What Makes a Framework "Vibe-Friendly"?</h2>
+    <p>
+      Before the tier list, here's the criteria. A vibe-friendly framework:
+    </p>
+    <ul>
+      <li><strong>Has clear, obvious file paths.</strong> <code>src/App.tsx</code> not <code>src/pages/~/components/__init__.py</code></li>
+      <li><strong>Minimal boilerplate.</strong> Less config = less for the AI to get wrong</li>
+      <li><strong>Convention over configuration (but not too much magic).</strong> The model needs to predict where things go</li>
+      <li><strong>Good docs in the training data.</strong> If millions of GitHub repos use it, the model knows it cold</li>
+      <li><strong>Simple build step.</strong> One command, one output directory, done</li>
+    </ul>
+
+    <!-- TIER RANKING -->
+    <h2><span class="num">02</span> The Tier Ranking</h2>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tier-badge tier-s">S Tier</span>
+        <h3>React + Vite</h3>
+        <p>
+          The undisputed king. Massive training data, single-file components, instant preview.
+          The AI writes React like a senior dev. Hard to go wrong.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-s">S Tier</span>
+        <h3>Plain HTML/CSS</h3>
+        <p>
+          No framework, no build step, no problems. The AI writes perfect HTML every time.
+          Perfect for landing pages, docs, and simple sites.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-s">S Tier</span>
+        <h3>Flask</h3>
+        <p>
+          One file, one route, one template. The AI gets Flask right 99% of the time.
+          Perfect for APIs and simple web apps. Django's chill little sibling.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-a">A Tier</span>
+        <h3>Vue 3 + Vite</h3>
+        <p>
+          Clean syntax, SFCs, great docs. Slightly less training data than React means occasional
+          Vue 2 vs Vue 3 confusion, but still excellent.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-a">A Tier</span>
+        <h3>Svelte + SvelteKit</h3>
+        <p>
+          Beautiful, concise syntax that the AI picks up well. Newer = slightly less reliable,
+          but improving fast. Svelte 5 runes occasionally trip it up.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-a">A Tier</span>
+        <h3>Django</h3>
+        <p>
+          Powerful but heavy. The AI handles models, views, and URLs well. Struggles with settings
+          magic, WSGI/ASGI configs, and the "which settings module?" dance.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-a">A Tier</span>
+        <h3>Hugo</h3>
+        <p>
+          Fast static sites with Go templates. The AI handles content and layout well, but
+          Go template syntax (<code>{{ }}</code>) collides with CSS braces. Use external CSS.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-b">B Tier</span>
+        <h3>Next.js</h3>
+        <p>
+          App Router vs Pages Router confusion. Server components, client components, caching
+          layers — lots of footguns. Works, but expect debugging sessions.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-b">B Tier</span>
+        <h3>Ruby on Rails</h3>
+        <p>
+          Convention-heavy. The AI knows Rails well, but the magic (implicit rendering, callbacks,
+          concerns) means generated code often looks right but does something subtly wrong.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tier-badge tier-c">C Tier</span>
+        <h3>Angular</h3>
+        <p>
+          Massive boilerplate, dependency injection, RxJS. The AI generates Angular, but it's
+          verbose and the failure modes are painful. Pick something else for vibe coding.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-title">✅ The golden rule</span>
+      <p>If the AI has seen a million examples, it'll write it well. React has 10x more public code than Angular. That matters.</p>
+    </div>
+
+    <!-- PER-FRAMEWORK NOTES -->
+    <h2><span class="num">03</span> Detailed Notes</h2>
+
+    <h3>React + Vite — The Default Choice</h3>
+    <p>
+      If you're starting a new vibe-coded frontend, pick React + Vite. Not because React is
+      objectively better, but because the AI has seen more React code than anything else.
+      You'll get working code on the first try more often, and when it breaks, the error
+      messages are ones the model has seen a million times.
+    </p>
+
+    <h3>Flask — The Backend Default</h3>
+    <p>
+      For a simple API or web app, Flask is unbeatable. One <code>app.py</code> file,
+      a few routes, and you're done. The AI writes clean Flask without configuration drama.
+      When you need a database, add SQLAlchemy. When you need auth, add Flask-Login.
+      Grow it incrementally.
+    </p>
+
+    <h3>Django — Powerful but Heavy</h3>
+    <p>
+      Django is great for production apps with auth, admin panels, and databases. But the
+      AI struggles with Django's configuration: <code>settings.py</code> paths, WSGI vs ASGI,
+      <code>INSTALLED_APPS</code> ordering, middleware stacks. Expect to spend more time
+      debugging setup than writing features.
+    </p>
+
+    <div class="callout warn">
+      <span class="callout-title">⚠️ Django tip</span>
+      <p>If you vibe-code Django, tell the AI exactly which settings module to use (<code>config.settings</code> not <code>myproject.settings</code>) and which entrypoint (WSGI vs ASGI). This saves 30 minutes of confusion.</p>
+    </div>
+
+    <h3>Plain HTML/CSS — Don't Overthink It</h3>
+    <p>
+      For a landing page, a portfolio, a docs site, or anything that doesn't need interactivity:
+      just use HTML and CSS. No build step, no node_modules, no framework updates. The AI writes
+      perfect HTML. You can ship in minutes.
+    </p>
+
+    <blockquote>
+      The best framework for vibe coding is the simplest one that does the job.
+    </blockquote>
+
+    <!-- THE CTA -->
+    <h2><span class="num">04</span> What Should I Pick?</h2>
+    <p>
+      Decision tree:
+    </p>
+    <ul>
+      <li><strong>Landing page or simple site?</strong> → Plain HTML/CSS</li>
+      <li><strong>Blog or content site?</strong> → Hugo or plain HTML</li>
+      <li><strong>Interactive frontend?</strong> → React + Vite</li>
+      <li><strong>Simple API or web app?</strong> → Flask</li>
+      <li><strong>Full-featured app with auth + database?</strong> → Django</li>
+      <li><strong>Enterprise-scale app?</strong> → You probably aren't vibe coding this (yet)</li>
+    </ul>
+
+    <div class="callout danger">
+      <span class="callout-title">🚨 One thing to avoid</span>
+      <p>Don't let the AI talk you into a framework you can't debug. If something breaks at 2am and you can't read the stack trace, you picked the wrong stack. Pick what you understand, not what's trendy.</p>
+    </div>
+
+    <div class="cta">
+      <p><strong>Pick your framework. Start building.</strong></p>
+      <a href="prompting.html">← Back to Prompting</a>
+    </div>
+  </article>
+
+  <footer>
+    <p>🦞 Vibe Coding 101 · A field guide for the curious builder</p>
+  </footer>
+</body>
+</html>
+
+<!-- AI Slop link added -->
